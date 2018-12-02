@@ -1,0 +1,16 @@
+body {
+  background: black;
+}
+
+.gamefield {
+  background: green;
+  position: absolute;
+}
+
+.gamefield > div {
+  position: absolute;
+}
+
+.gamefield .wall {
+  background: brown;
+}
