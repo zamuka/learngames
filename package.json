@@ -1,0 +1,26 @@
+{
+  "name": "learngames",
+  "version": "1.0.0",
+  "description": "simple games to learn js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server games"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zamuka/learngames.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zamuka/learngames/issues"
+  },
+  "homepage": "https://github.com/zamuka/learngames#readme",
+  "dependencies": {
+    "eslint": "5.9.0",
+    "eslint-config-airbnb": "17.1.0",
+    "http-server": "0.11.1"
+  }
+}

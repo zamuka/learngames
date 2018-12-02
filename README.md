@@ -1,2 +1,2 @@
 # learngames
-simple games to learn js
+simple games to learn Javascript
