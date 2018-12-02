@@ -9,6 +9,7 @@
     "rules": {
         "import/extensions": "off",
         "semi": 2,
-        "no-console": "off"
+        "no-console": "off",
+        "linebreak-style": "off"
     }
 }
