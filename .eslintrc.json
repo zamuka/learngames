@@ -10,6 +10,7 @@
         "import/extensions": "off",
         "semi": 2,
         "no-console": "off",
-        "linebreak-style": "off"
+        "linebreak-style": "off",
+        "operator-assignment": "off"
     }
 }

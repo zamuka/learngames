@@ -2,18 +2,50 @@ import { GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT } from './config.js';
 
 import GameField from './components/gamefield/gamefield.js';
 
-const cycleLingthMs = 1000;
-let cycleNumber = 0;
+const cycleLingthMs = 100;
+let time = 0;
+let headX = 0;
+let headY = 0;
+const tailX = 0;
+const tailY = 0;
+
+// left, right, up, down
+let dir = 'up';
+
+let gameField;
 
 function tick() {
-  cycleNumber += 1;
-  console.log('Tick', cycleNumber);
+  time = time + 1;
 
+  if (dir === 'up') {
+    headY = headY - 1;
+  }
+  if (dir === 'down') {
+    headY = headY + 1;
+  }
+
+  if (dir === 'right') {
+    headX = headX + 1;
+  }
+  if (dir === 'left') {
+    headX = headX - 1;
+  }
+  gameField.setCell(headX, headY, `snake ${dir}`);
+
+  // schedule next cycle run
   setTimeout(tick, cycleLingthMs);
 }
 
+function keyDown(event) {
+  if (event.key === 'ArrowUp') dir = 'up';
+  if (event.key === 'ArrowDown') dir = 'down';
+  if (event.key === 'ArrowLeft') dir = 'left';
+  if (event.key === 'ArrowRight') dir = 'right';
+  console.log(event);
+}
+
 function main() {
-  const gameField = new GameField(GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT);
+  gameField = new GameField(GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT);
 
   for (let x = 0; x < GAMEFIELD_WIDTH; x = 1 + x) {
     gameField.setCell(x, 0, 'wall');
@@ -26,13 +58,12 @@ function main() {
   }
 
 
-  // x 3, y 4 => x10, y20
-  for (let x = 5; x < 15; x += 2) {
-    gameField.setCell(x, x, 'wall');
-  }
-
+  headX = 15;
+  headY = 15;
+  dir = 'down';
   tick();
 }
 
 
 window.onload = main;
+window.onkeydown = keyDown;
