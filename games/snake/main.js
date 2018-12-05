@@ -1,22 +1,22 @@
-import { GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT } from './config.js';
+import { GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT, INITIAL_LENGTH } from './config.js';
 
 import GameField from './components/gamefield/gamefield.js';
 
-const cycleLingthMs = 100;
+const cycleLingthMs = 300;
 let time = 0;
 let headX = 0;
 let headY = 0;
-const tailX = 0;
-const tailY = 0;
+let tailX = 0;
+let tailY = 0;
+let paused = false;
+let tailDelay = 0;
 
 // left, right, up, down
 let dir = 'up';
 
 let gameField;
 
-function tick() {
-  time = time + 1;
-
+function moveHead() {
   if (dir === 'up') {
     headY = headY - 1;
   }
@@ -30,23 +30,64 @@ function tick() {
   if (dir === 'left') {
     headX = headX - 1;
   }
+}
+
+function drawHead() {
   gameField.setCell(headX, headY, `snake ${dir}`);
+}
 
+function moveTail() {
+  if (tailDelay > 0) {
+    tailDelay = tailDelay - 1;
+    return;
+  }
+
+  const cell = gameField.getCell(tailX, tailY);
+  gameField.setCell(tailX, tailY, '');
+
+  console.log(cell, tailX, tailX);
+  if (cell === 'snake up') {
+    tailY = tailY - 1;
+  }
+  if (cell === 'snake down') {
+    tailY = tailY + 1;
+  }
+  if (cell === 'snake right') {
+    tailX = tailX + 1;
+  }
+  if (cell === 'snake left') {
+    tailX = tailX - 1;
+  }
+}
+
+function tick() {
+  time = time + 1;
+
+  drawHead();
+  moveHead();
+
+  const cell = gameField.getCell(headX, headY);
+  if (cell !== '') {
+    paused = true;
+    alert('Game Over!');
+    resetGame();
+    return;
+  }
+  drawHead();
+
+  moveTail();
   // schedule next cycle run
-  setTimeout(tick, cycleLingthMs);
+  if (!paused) {
+    setTimeout(tick, cycleLingthMs);
+  }
 }
 
-function keyDown(event) {
-  if (event.key === 'ArrowUp') dir = 'up';
-  if (event.key === 'ArrowDown') dir = 'down';
-  if (event.key === 'ArrowLeft') dir = 'left';
-  if (event.key === 'ArrowRight') dir = 'right';
-  console.log(event);
-}
-
-function main() {
-  gameField = new GameField(GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT);
-
+function resetGame() {
+  for (let x = 0; x < GAMEFIELD_WIDTH; x = 1 + x) {
+    for (let y = 0; y < GAMEFIELD_HEIGHT; y = 1 + y) {
+      gameField.setCell(x, y, '');
+    }
+  }
   for (let x = 0; x < GAMEFIELD_WIDTH; x = 1 + x) {
     gameField.setCell(x, 0, 'wall');
     gameField.setCell(x, GAMEFIELD_HEIGHT - 1, 'wall');
@@ -57,13 +98,37 @@ function main() {
     gameField.setCell(GAMEFIELD_WIDTH - 1, y, 'wall');
   }
 
-
-  headX = 15;
-  headY = 15;
-  dir = 'down';
+  headX = 5;
+  headY = 5;
+  tailX = headX;
+  tailY = headY;
+  tailDelay = INITIAL_LENGTH;
+  paused = false;
+  dir = 'right';
   tick();
 }
 
+
+function keyDown(event) {
+  if (event.code === 'ArrowUp') dir = 'up';
+  if (event.code === 'ArrowDown') dir = 'down';
+  if (event.code === 'ArrowLeft') dir = 'left';
+  if (event.code === 'ArrowRight') dir = 'right';
+  if (event.code === 'Enter') tailDelay = tailDelay + 10;
+  if (event.code === 'Space') {
+    paused = !paused;
+    if (!paused) {
+      tick();
+    }
+  }
+
+  console.log(event);
+}
+
+function main() {
+  gameField = new GameField(GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT);
+  resetGame();
+}
 
 window.onload = main;
 window.onkeydown = keyDown;

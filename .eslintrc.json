@@ -11,6 +11,7 @@
         "semi": 2,
         "no-console": "off",
         "linebreak-style": "off",
-        "operator-assignment": "off"
+        "operator-assignment": "off",
+        "no-use-before-define": "off"
     }
 }

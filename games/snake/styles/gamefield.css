@@ -16,5 +16,21 @@ body {
 }
 .gamefield .snake {
   background: black;
-  border-radius: 5px;
+}
+
+.gamefield .snake.left {
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
+}
+.gamefield .snake.right {
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
+}
+.gamefield .snake.down {
+  border-bottom-left-radius: 100px;
+  border-bottom-right-radius: 100px;
+}
+.gamefield .snake.up {
+  border-top-left-radius: 100px;
+  border-top-right-radius: 100px;
 }
