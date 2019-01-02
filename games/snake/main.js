@@ -2,7 +2,7 @@ import { GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT, INITIAL_LENGTH } from './config.js';
 
 import GameField from './components/gamefield/gamefield.js';
 
-const cycleLingthMs = 300;
+const cycleLingthMs = 200;
 let time = 0;
 let headX = 0;
 let headY = 0;
@@ -10,6 +10,7 @@ let tailX = 0;
 let tailY = 0;
 let paused = false;
 let tailDelay = 0;
+let score = 0;
 
 // left, right, up, down
 let dir = 'up';
@@ -66,13 +67,21 @@ function tick() {
   drawHead();
   moveHead();
 
-  const cell = gameField.getCell(headX, headY);
-  if (cell !== '') {
-    paused = true;
-    alert('Game Over!');
-    resetGame();
-    return;
+  const hitCell = gameField.getCell(headX, headY);
+
+  if (hitCell !== '') {
+    if (hitCell === 'food') {
+      score = score + 1;
+      tailDelay = 1;
+      addFood();
+    } else {
+      paused = true;
+      alert(`Game Over! You score : ${score}`);
+      resetGame();
+      return;
+    }
   }
+
   drawHead();
 
   moveTail();
@@ -83,9 +92,13 @@ function tick() {
 }
 
 function addFood() {
-  // TODO: add new food when food is eaten
-  const foodX = Math.floor(Math.random() * (GAMEFIELD_WIDTH - 2)) + 1;
-  const foodY = Math.floor(Math.random() * (GAMEFIELD_HEIGHT - 2)) + 1;
+  let foodX;
+  let foodY;
+  do {
+    foodX = Math.floor(Math.random() * (GAMEFIELD_WIDTH - 2)) + 1;
+    foodY = Math.floor(Math.random() * (GAMEFIELD_HEIGHT - 2)) + 1;
+  } while (gameField.getCell(foodX, foodY) !== '');
+
   gameField.setCell(foodX, foodY, 'food');
 }
 
@@ -107,6 +120,7 @@ function resetGame() {
 
   addFood();
 
+  score = 0;
   headX = 5;
   headY = 5;
   tailX = headX;
