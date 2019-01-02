@@ -14,6 +14,10 @@ body {
 .gamefield .wall {
   background: brown;
 }
+.gamefield .food {
+  background: yellow;
+  border-radius: 100px;
+}
 .gamefield .snake {
   background: black;
 }

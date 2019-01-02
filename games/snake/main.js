@@ -82,6 +82,13 @@ function tick() {
   }
 }
 
+function addFood() {
+  // TODO: add new food when food is eaten
+  const foodX = Math.floor(Math.random() * (GAMEFIELD_WIDTH - 2)) + 1;
+  const foodY = Math.floor(Math.random() * (GAMEFIELD_HEIGHT - 2)) + 1;
+  gameField.setCell(foodX, foodY, 'food');
+}
+
 function resetGame() {
   for (let x = 0; x < GAMEFIELD_WIDTH; x = 1 + x) {
     for (let y = 0; y < GAMEFIELD_HEIGHT; y = 1 + y) {
@@ -97,6 +104,8 @@ function resetGame() {
     gameField.setCell(0, y, 'wall');
     gameField.setCell(GAMEFIELD_WIDTH - 1, y, 'wall');
   }
+
+  addFood();
 
   headX = 5;
   headY = 5;
