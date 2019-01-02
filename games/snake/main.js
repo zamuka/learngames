@@ -2,7 +2,7 @@ import { GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT, INITIAL_LENGTH } from './config.js';
 
 import GameField from './components/gamefield/gamefield.js';
 
-const cycleLingthMs = 200;
+const cycleLengthMs = 200;
 let time = 0;
 let headX = 0;
 let headY = 0;
@@ -87,7 +87,7 @@ function tick() {
   moveTail();
   // schedule next cycle run
   if (!paused) {
-    setTimeout(tick, cycleLingthMs);
+    setTimeout(tick, cycleLengthMs);
   }
 }
 
