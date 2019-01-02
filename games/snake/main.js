@@ -119,10 +119,10 @@ function resetGame() {
 
 
 function keyDown(event) {
-  if (event.code === 'ArrowUp') dir = 'up';
-  if (event.code === 'ArrowDown') dir = 'down';
-  if (event.code === 'ArrowLeft') dir = 'left';
-  if (event.code === 'ArrowRight') dir = 'right';
+  if (event.code === 'ArrowUp' && dir !== 'down') dir = 'up';
+  if (event.code === 'ArrowDown' && dir !== 'up') dir = 'down';
+  if (event.code === 'ArrowLeft' && dir !== 'right') dir = 'left';
+  if (event.code === 'ArrowRight' && dir !== 'left') dir = 'right';
   if (event.code === 'Enter') tailDelay = tailDelay + 10;
   if (event.code === 'Space') {
     paused = !paused;
