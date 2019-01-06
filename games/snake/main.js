@@ -2,7 +2,7 @@ import { GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT, INITIAL_LENGTH } from './config.js';
 
 import GameField from './components/gamefield/gamefield.js';
 
-const cycleLengthMs = 200;
+let cycleLengthMs = 200;
 let time = 0;
 let headX = 0;
 let headY = 0;
@@ -71,6 +71,7 @@ function tick() {
 
   if (hitCell !== '') {
     if (hitCell === 'food') {
+      cycleLengthMs = cycleLengthMs * 0.9;
       score = score + 1;
       tailDelay = 1;
       addFood();
@@ -120,6 +121,7 @@ function resetGame() {
 
   addFood();
 
+  cycleLengthMs = 200;
   score = 0;
   headX = 5;
   headY = 5;
