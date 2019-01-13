@@ -21,7 +21,10 @@ body {
 .gamefield .snake {
   background: black;
 }
-
+.gamefield .Enemy{
+  background: blue;
+  border-radius: 40px;
+}
 .gamefield .snake.left {
   border-top-left-radius: 100px;
   border-bottom-left-radius: 100px;

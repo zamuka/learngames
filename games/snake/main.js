@@ -69,18 +69,29 @@ function tick() {
 
   const hitCell = gameField.getCell(headX, headY);
 
-  if (hitCell !== '') {
-    if (hitCell === 'food') {
+  switch (hitCell) {
+    case 'food': 
       cycleLengthMs = cycleLengthMs * 0.9;
       score = score + 1;
       tailDelay = 1;
       addFood();
-    } else {
+      break;
+
+    case 'Enemy':
+      cycleLengthMs = cycleLengthMs * 0.1;
+      score = score + 0;
+      tailDelay = 100;
+      addEnemy();
+      break;
+
+    case '':
+      break;
+
+    default:
       paused = true;
       alert(`Game Over! You score : ${score}`);
       resetGame();
       return;
-    }
   }
 
   drawHead();
@@ -90,6 +101,17 @@ function tick() {
   if (!paused) {
     setTimeout(tick, cycleLengthMs);
   }
+}
+
+function addEnemy() {
+  let EnemyX;
+  let EnemyY;
+  do {
+    EnemyX = Math.floor(Math.random() * (GAMEFIELD_WIDTH - 2)) + 1;
+    EnemyY = Math.floor(Math.random() * (GAMEFIELD_HEIGHT - 2)) + 1;
+  } while (gameField.getCell(EnemyX, EnemyY) !== '');
+
+  gameField.setCell(EnemyX, EnemyY, 'Enemy');
 }
 
 function addFood() {
@@ -121,7 +143,9 @@ function resetGame() {
 
   addFood();
 
-  cycleLengthMs = 200;
+  addEnemy();
+
+  cycleLengthMs = 400;
   score = 0;
   headX = 5;
   headY = 5;
@@ -132,7 +156,6 @@ function resetGame() {
   dir = 'right';
   tick();
 }
-
 
 function keyDown(event) {
   if (event.code === 'ArrowUp' && dir !== 'down') dir = 'up';
@@ -157,3 +180,4 @@ function main() {
 
 window.onload = main;
 window.onkeydown = keyDown;
+
