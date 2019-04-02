@@ -4,8 +4,16 @@ let ctx;
 let halfWidth;
 let halfHeight;
 
+function setPixel(x, y) {
+  ctx.fillRect(x + halfWidth, halfHeight - y, 1, 1);
+}
+
 function init() {
   canvas = document.getElementById('canvas');
+
+  canvas.addEventListener('mousedown', (event) => {
+    setPixel(event.x - halfWidth, halfHeight - event.y);
+  });
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
@@ -16,9 +24,6 @@ function init() {
   initAxes();
 }
 
-function setPixel(x, y) {
-  ctx.fillRect(x + halfWidth, halfHeight - y, 1, 1);
-}
 
 function initAxes() {
   for (let x = -halfWidth; x < halfWidth; x = x + 1) {
@@ -63,20 +68,14 @@ function sin(x) {
   return y;
 }
 
-function line(x1, y1, x2, y2) {
-
-}
-
 function main() {
   init();
 
 
-  // drawFunction(xsquare, 'red');
+  drawFunction(xsquare, 'red');
 
-  // drawFunction(linear, 'green');
-  // drawFunction(sin, 'blue');
-
-  line(0, 0, 200, -100);
+  drawFunction(linear, 'green');
+  drawFunction(sin, 'blue');
 }
 
 
