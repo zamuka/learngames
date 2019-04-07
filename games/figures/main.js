@@ -74,6 +74,24 @@ function main() {
       setPixel(500 + i / 2, 150 - i);
       setPixel(550 + i / 2, 50 + i);
       setPixel(525 + i / 2, 100);
+
+      setPixel(50, 450 + i);
+      setPixel(50 + i / 2, 450 + i);
+      setPixel(100 + i / 2, 550 - i);
+      setPixel(150, 450 + i);
+
+      setPixel(200, 450 + i);
+      setPixel(300 - i * 1, 450 + i);
+      setPixel(300, 450 + i);
+
+      setPixel(350, 450 + i);
+      setPixel(450, 450 + i);
+      setPixel(350 + i, 550);
+      setPixel(400, 450 + i);
+
+      setPixel(500 + i / 2, 550 - i);
+      setPixel(550 + i / 2, 450 + i);
+      setPixel(525 + i / 2, 500);
     }, 20 * i);
   }
   // line(0, 0, 200, -100);
