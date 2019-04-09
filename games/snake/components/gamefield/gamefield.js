@@ -8,6 +8,11 @@ export default class GameField {
     this.fieldElement = document.getElementById('gamefield');
     this.fieldElement.style.width = width * CELL_WIDTH;
     this.fieldElement.style.height = height * CELL_HEIGHT;
+    this.fieldElement.addEventListener('mousedown', (event) => {
+      const x = Math.floor((event.x - this.fieldElement.offsetLeft) / CELL_WIDTH);
+      const y = Math.floor((event.y - this.fieldElement.offsetTop) / CELL_HEIGHT);
+      this.onCellClick(x, y);
+    });
 
     for (let col = 0; col < width; col += 1) {
       for (let row = 0; row < height; row += 1) {
@@ -36,5 +41,9 @@ export default class GameField {
     if (cellElement) {
       cellElement.className = cellValue;
     }
+  }
+
+  onCellClick(x, y) {
+    console.log(x, y);
   }
 }

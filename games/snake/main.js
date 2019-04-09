@@ -70,7 +70,7 @@ function tick() {
   const hitCell = gameField.getCell(headX, headY);
 
   switch (hitCell) {
-    case 'food': 
+    case 'food':
       cycleLengthMs = cycleLengthMs * 0.9;
       score = score + 1;
       tailDelay = 1;
@@ -173,11 +173,21 @@ function keyDown(event) {
   console.log(event);
 }
 
+function cellClick(x, y) {
+  if (dir === 'up' || dir === 'down') {
+    if (x > headX) dir = 'right';
+    if (x < headX) dir = 'left';
+  } else {
+    if (y > headY) dir = 'down';
+    if (y < headY) dir = 'up';
+  }
+}
+
 function main() {
   gameField = new GameField(GAMEFIELD_WIDTH, GAMEFIELD_HEIGHT);
+  gameField.onCellClick = cellClick;
   resetGame();
 }
 
 window.onload = main;
 window.onkeydown = keyDown;
-
