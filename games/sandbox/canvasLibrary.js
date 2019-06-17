@@ -1,11 +1,14 @@
 let canvas;
 let ctx;
 
-function init() {
+function init(zoom) {
   canvas = document.getElementById('canvas');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   ctx = canvas.getContext('2d');
+  ctx.scale(zoom, zoom);
+  ctx.mozImageSmoothingEnabled = false;
+  ctx.webkitImageSmoothingEnabled = false;
 }
 
 function setPixel(x, y) {
@@ -32,7 +35,7 @@ function line(x1, y1, x2, y2) {
     const pointX = x1 + stepX * i;
     const pointY = y1 + stepY * i;
 
-    setPixel(pointX, pointY);
+    setPixel(Math.floor(pointX), Math.floor(pointY));
   }
 }
 
