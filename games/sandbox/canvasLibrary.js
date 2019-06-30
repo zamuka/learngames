@@ -35,10 +35,19 @@ function line(x1, y1, x2, y2) {
     setPixel(pointX, pointY);
   }
 }
+/**
+ *
+ * @param {number} map
+ * @returns {number} a random number from 0 to max
+ */
+function rnd(map) {
+  return Math.floor(Math.random() * max);
+}
 
 export {
   init,
   setPixel,
   ctx,
   line,
+  rnd
 };
