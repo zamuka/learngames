@@ -12,7 +12,7 @@ function init(zoom) {
 }
 
 function setPixel(x, y) {
-  ctx.fillRect(x, y, 1, 1);
+  ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
 }
 
 function line(x1, y1, x2, y2) {
