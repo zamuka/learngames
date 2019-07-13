@@ -1,36 +1,46 @@
-import { init, line } from '../canvasLibrary.js';
+import { init, line, setPixel } from '../canvasLibrary.js';
+
+
+const STEP_COUNT = 5;
+
+function bush(topx, topy, startx, starty, endx, endy) {
+  const width = endx - startx;
+  const height = endy - starty;
+
+  const stepSizeX = width / STEP_COUNT;
+  const stepSizeY = height / STEP_COUNT;
+  console.log('startx', startx);
+  console.log('stepSizeX', stepSizeX);
+
+  for (let step = 0; step < STEP_COUNT; step += 1) {
+    const pointx = startx + stepSizeX * step;
+    const pointy = starty + stepSizeY * step;
+
+    console.log('---------------------------');
+    console.log('step', step);
+    console.log('pointx', pointx);
+    // console.log('pointy', pointy);
+    // setPixel(pointx, pointy);
+    line(topx, topy, pointx, pointy);
+  }
+}
 
 function main() {
   init();
-  for (let i = 0; i <= 500; i = i + 25) {
-    // line(0, i, i, 0);
-    // line(500 - i, 500, 500, 500 - i);
-    // line(500 - i, 500, 0, i);
-    // line(500 - i, 0, 500, i);
-    // line(0, i, i, 0);
-    line(0 + i, 500, 500, 500 - i);
-    line(500 + i, 500, 500, i);
-    line(500 - i, 500, 500, 1000 - i);
-    line(500 + i, 500, 500, 1000 - i);
-  }
-  for (let i = 0; i <= 100; i = i + 5) {
-    line(0 + i, 100, 100, 100 - i);
-    line(100 + i, 100, 100, i);
-    line(100 - i, 100, 100, 200 - i);
-    line(100 + i, 100, 100, 200 - i);
-    line(900 + i, 100, 1000, 100 - i);
-    line(1000 + i, 100, 1000, i);
-    line(1100 - i, 100, 1000, 100 + i);
-    line(900 + i, 100, 1000, 100 + i);
-    line(0 + i, 900, 100, 900 - i);
-    line(100 + i, 900, 100, 1000 - i);
-    line(100 - i, 900, 100, 1000 - i);
-    line(100 + i, 900, 100, 800 + i);
-    line(1000 + i, 900, 1000, 800 + i);
-    line(1000 - i, 900, 1000, 800 + i);
-    line(1000 - i, 900, 1000, 1000 - i);
-    line(1000 + i, 900, 1000, 1000 - i);
-  }
+
+  const cx = 60;
+  const cy = 70;
+
+  const ax = 10;
+  const ay = 100;
+  const bx = 20;
+  const by = 20;
+
+
+  bush(cx, cy, ax, ay, bx, by);
+  bush(ax, ay, bx, by, cx, cy);
+  bush(bx, by, cx, cy, ax, ay);
 }
+
 
 window.onload = main;
