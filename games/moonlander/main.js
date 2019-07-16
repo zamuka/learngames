@@ -81,8 +81,14 @@ function main() {
     drawPixelBelowGround(j);
     j = j + 1;
   }
-
-  //
+  ctx.fillStyle = 'rgb(255, 255, 255)';
+  const snowSpawnHeight = 160;
+  for (let k = 0; k < heightMap.length; k = k + 1) {
+    const y = heightMap[k] - 1;
+    if (y < snowSpawnHeight) {
+      setPixel(k, y);
+    }
+  }
 
   // heightMap.forEach((height, x) => setPixel(x, height + 1));
   drawStars();
