@@ -4,6 +4,7 @@ import {
 
 const heightMap = [];
 const ZOOM = 2;
+let starCount = 0;
 
 function clearScreen(color) {
   ctx.save();
@@ -19,6 +20,7 @@ function drawLandscape(height) {
   let y = height;
   let vy = 0;
   let ay = 0;
+
 
   while (x < canvas.width / ZOOM) {
     setPixel(x, y);
@@ -40,8 +42,10 @@ function getRandomInt(max) {
 function addStar() {
   const x = getRandomInt(canvas.width / ZOOM);
   const y = getRandomInt(canvas.height / ZOOM);
-  if (y < heightMap[x]) { setPixel(x, y); }
-  console.log(x);
+  if (y < heightMap[x]) {
+    setPixel(x, y);
+    starCount = starCount + 1;
+  }
 }
 
 function main() {
@@ -52,12 +56,15 @@ function main() {
 
   drawLandscape(200);
 
+
   console.log(heightMap);
   console.log(heightMap[200]);
 
-  for (let i = 0; i < 50; i = i + 1) {
+  for (let i = 0; i < 100; i = i + 1) {
     addStar();
   }
+
+  console.log('starCount :', starCount);
 }
 
 
