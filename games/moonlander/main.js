@@ -5,6 +5,7 @@ import {
 const heightMap = [];
 const ZOOM = 2;
 let starCount = 0;
+let snowCount = 0;
 
 function clearScreen(color) {
   ctx.save();
@@ -91,12 +92,14 @@ function main() {
     const y = heightMap[k] - 1;
     if (y < snowSpawnHeight) {
       setPixel(k, y);
+      snowCount = snowCount + 1;
     }
   }
 
   // heightMap.forEach((height, x) => setPixel(x, height + 1));
   drawStars();
   console.log('starCount :', starCount);
+  console.log('snowCount :', snowCount);
 }
 
 
