@@ -21,14 +21,18 @@ function drawLandscape(height) {
   let y = height;
   let vy = 0;
   let ay = 0;
+  const MAX_SLOPE = 2;
 
+  for (let i = 0; i < 100; i = i + 1) {
+    const landX = Math.random() * canvas.width / ZOOM - 50;
+    line(landX, 100, landX, 200);
+  }
 
   while (x < canvas.width / ZOOM) {
-    const MAX_SLOPE = 2;
     setPixel(x, y);
     heightMap.push(Math.floor(y));
-
     x = x + 1;
+
     ay = Math.random() - 0.5 + 0.001 * (height - y);
     vy = vy + ay;
     if (vy > MAX_SLOPE) vy = MAX_SLOPE;
