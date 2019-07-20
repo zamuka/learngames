@@ -23,10 +23,12 @@ function drawLandscape(height) {
   let ay = 0;
   const MAX_SLOPE = 2;
 
-  for (let i = 0; i < 100; i = i + 1) {
-    const landX = Math.random() * canvas.width / ZOOM - 50;
-    line(landX, 100, landX, 200);
+  for (let i = 0; i < 3; i = i + 1) {
+    const landX = Math.random() * 800 + 200;
+    const landY = Math.random() * 200 + 120;
+    line(landX, landY, landX + 50, landY);
   }
+
 
   while (x < canvas.width / ZOOM) {
     setPixel(x, y);
