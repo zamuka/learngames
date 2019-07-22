@@ -1,17 +1,27 @@
 import {
-  init, line, ctx, canvas, setPixel,
+  init, ctx, canvas, setPixel,
 } from '../sandbox/canvasLibrary.js';
 
 const heightMap = [];
 const ZOOM = 2;
+const padMinBorderDistance = 50;
 let starCount = 0;
 let snowCount = 0;
+
+
+function getScreenWidth() {
+  return canvas.width / ZOOM;
+}
+
+function getScreenHeight() {
+  return canvas.height / ZOOM;
+}
 
 function clearScreen(color) {
   ctx.save();
 
   ctx.fillStyle = color;
-  ctx.fillRect(0, 0, (canvas.width / ZOOM) - 1, (canvas.height / ZOOM) - 1);
+  ctx.fillRect(0, 0, getScreenWidth() - 1, getScreenHeight() - 1);
 
   ctx.restore();
 }
@@ -21,25 +31,28 @@ function drawLandscape(height) {
   let y = height;
   let vy = 0;
   let ay = 0;
+  const padWidth = 40;
+
+  const padPosition = Math.round(Math.random() * (getScreenWidth() - padMinBorderDistance * 2))
+    + padMinBorderDistance;
+
   const MAX_SLOPE = 2;
+  const padStartX = padPosition - padWidth / 2;
+  const padEndX = padPosition + padWidth / 2;
 
-  for (let i = 0; i < 3; i = i + 1) {
-    const landX = Math.random() * 800 + 200;
-    const landY = Math.random() * 200 + 120;
-    line(landX, landY, landX + 50, landY);
-  }
-
-
-  while (x < canvas.width / ZOOM) {
+  while (x < getScreenWidth()) {
     setPixel(x, y);
     heightMap.push(Math.floor(y));
     x = x + 1;
+    const isOnPad = x > padStartX && x < padEndX;
+    if (!isOnPad) {
+      ay = Math.random() - 0.5 + 0.001 * (height - y);
+      vy = vy + ay;
+      if (vy > MAX_SLOPE) vy = MAX_SLOPE;
+      if (vy < -MAX_SLOPE) vy = -MAX_SLOPE;
 
-    ay = Math.random() - 0.5 + 0.001 * (height - y);
-    vy = vy + ay;
-    if (vy > MAX_SLOPE) vy = MAX_SLOPE;
-    if (vy < -MAX_SLOPE) vy = -MAX_SLOPE;
-    y = y + vy;
+      y = y + vy;
+    }
   }
 }
 
@@ -48,8 +61,8 @@ function getRandomInt(max) {
 }
 
 function addStar() {
-  const x = getRandomInt(canvas.width / ZOOM);
-  const y = getRandomInt(canvas.height / ZOOM);
+  const x = getRandomInt(getScreenWidth());
+  const y = getRandomInt(getScreenHeight());
   if (y < heightMap[x]) {
     setPixel(x, y);
     starCount = starCount + 1;
@@ -73,16 +86,6 @@ function main() {
 
   drawLandscape(200);
 
-
-  console.log(heightMap);
-  console.log(heightMap[200]);
-
-  // ctx.fillStyle = 'rgb(200, 200, 200)';
-
-  // function drawPixelBelowGround(x) {
-  //   setPixel(x, heightMap[x] + 1);
-  // }
-
   const drawPixelBelowGround = (x) => {
     setPixel(x, heightMap[x] + 1);
   };
@@ -102,7 +105,6 @@ function main() {
     }
   }
 
-  // heightMap.forEach((height, x) => setPixel(x, height + 1));
   drawStars();
   console.log('starCount :', starCount);
   console.log('snowCount :', snowCount);
