@@ -7,8 +7,6 @@ const ZOOM = 2;
 const padMinBorderDistance = 50;
 let starCount = 0;
 let snowCount = 0;
-const starY = Math.random() * heightMap;
-
 
 function getScreenWidth() {
   return canvas.width / ZOOM;
@@ -57,27 +55,32 @@ function drawLandscape(height) {
   }
 }
 
+/**
+ * @param {number} max
+ * @returns random number up to max
+ */
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
 function addStar() {
-  const x = getRandomInt(getScreenWidth());
-  const y = getRandomInt(getScreenHeight());
-  if (y < heightMap[x]) {
-    setPixel(x, y);
-    starCount = starCount + 1;
-  }
+  let starX;
+  let starY;
+
+  do {
+    starX = getRandomInt(getScreenWidth());
+    starY = getRandomInt(getScreenHeight());
+  } while (starY > heightMap[starX]);
+
+  setPixel(starX, starY);
+  starCount = starCount + 1;
 }
 
 const drawStars = () => {
   ctx.save();
   ctx.fillStyle = 'rgb(255, 255, 255)';
-  for (let i = 0; i < 10; i = i + 1) {
-    if (starY > heightMap);
+  for (let i = 0; i < 100; i = i + 1) {
     addStar();
-    if (starY < heightMap);
-    return (drawStars());
   }
   ctx.restore();
 };
