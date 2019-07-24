@@ -7,6 +7,7 @@ const ZOOM = 2;
 const padMinBorderDistance = 50;
 let starCount = 0;
 let snowCount = 0;
+const starY = Math.random() * heightMap;
 
 
 function getScreenWidth() {
@@ -72,8 +73,11 @@ function addStar() {
 const drawStars = () => {
   ctx.save();
   ctx.fillStyle = 'rgb(255, 255, 255)';
-  for (let i = 0; i < 100; i = i + 1) {
+  for (let i = 0; i < 10; i = i + 1) {
+    if (starY > heightMap);
     addStar();
+    if (starY < heightMap);
+    return (drawStars());
   }
   ctx.restore();
 };
