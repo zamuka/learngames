@@ -1,10 +1,11 @@
 import {
-  init, ctx, canvas, setPixel,
+  init, ctx, canvas, setPixel, line,
 } from '../sandbox/canvasLibrary.js';
 
 const heightMap = [];
 const ZOOM = 2;
 const padMinBorderDistance = 50;
+const TREE_HEIGHT = 25;
 let starCount = 0;
 let snowCount = 0;
 
@@ -53,6 +54,10 @@ function drawLandscape(height) {
       y = y + vy;
     }
   }
+}
+function addTree() {
+  const treeX = getRandomInt(getScreenWidth());
+  line(treeX, heightMap[treeX] - TREE_HEIGHT, treeX, heightMap[treeX]);
 }
 
 /**
@@ -115,6 +120,9 @@ function main() {
   drawStars();
   console.log('starCount :', starCount);
   console.log('snowCount :', snowCount);
+  for (let i = 0; i < 10; i = i + 1) {
+    addTree();
+  }
 }
 
 
