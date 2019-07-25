@@ -55,6 +55,7 @@ function drawLandscape(height) {
     }
   }
 }
+
 function addTree() {
   const treeX = getRandomInt(getScreenWidth());
   line(treeX, heightMap[treeX] - TREE_HEIGHT, treeX, heightMap[treeX]);
@@ -120,6 +121,7 @@ function main() {
   drawStars();
   console.log('starCount :', starCount);
   console.log('snowCount :', snowCount);
+
   for (let i = 0; i < 10; i = i + 1) {
     addTree();
   }
