@@ -9,6 +9,13 @@ const TREE_HEIGHT = 25;
 let starCount = 0;
 let snowCount = 0;
 
+const landingPad = {
+  width: 40,
+  position: -1,
+  start: -1,
+  end: -1,
+};
+
 function getScreenWidth() {
   return canvas.width / ZOOM;
 }
@@ -31,20 +38,19 @@ function drawLandscape(height) {
   let y = height;
   let vy = 0;
   let ay = 0;
-  const padWidth = 40;
 
-  const padPosition = Math.round(Math.random() * (getScreenWidth() - padMinBorderDistance * 2))
+  landingPad.position = Math.round(Math.random() * (getScreenWidth() - padMinBorderDistance * 2))
     + padMinBorderDistance;
 
   const MAX_SLOPE = 2;
-  const padStartX = padPosition - padWidth / 2;
-  const padEndX = padPosition + padWidth / 2;
+  landingPad.start = landingPad.position - landingPad.width / 2;
+  landingPad.end = landingPad.position + landingPad.width / 2;
 
   while (x < getScreenWidth()) {
     setPixel(x, y);
     heightMap.push(Math.floor(y));
     x = x + 1;
-    const isOnPad = x > padStartX && x < padEndX;
+    const isOnPad = x > landingPad.start && x < landingPad.end;
     if (!isOnPad) {
       ay = Math.random() - 0.5 + 0.001 * (height - y);
       vy = vy + ay;
@@ -121,6 +127,8 @@ function main() {
   drawStars();
   console.log('starCount :', starCount);
   console.log('snowCount :', snowCount);
+
+  console.log(landingPad);
 
   for (let i = 0; i < 10; i = i + 1) {
     addTree();
