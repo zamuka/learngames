@@ -64,8 +64,11 @@ function drawLandscape(height) {
 
 function addTree() {
   const treeX = getRandomInt(getScreenWidth());
-  line(treeX, heightMap[treeX] - TREE_HEIGHT, treeX, heightMap[treeX]);
+  if (landingPad.position < treeX) {
+    line(treeX, heightMap[treeX] - TREE_HEIGHT, treeX, heightMap[treeX]);
+  }
 }
+
 
 /**
  * @param {number} max
