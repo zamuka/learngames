@@ -15,7 +15,7 @@ const landingPad = {
   start: -1,
   end: -1,
 };
-
+const distanceFromPadForTrees = 10;
 function getScreenWidth() {
   return canvas.width / ZOOM;
 }
@@ -62,10 +62,15 @@ function drawLandscape(height) {
   }
 }
 
-function addTree() {
-  const treeX = getRandomInt(getScreenWidth());
-  if (landingPad.position < treeX) {
-    line(treeX, heightMap[treeX] - TREE_HEIGHT, treeX, heightMap[treeX]);
+function addTrees(treeCount) {
+  for (let i = 0; i < treeCount; i = i + 1) {
+    const treeX = getRandomInt(getScreenWidth());
+    if (treeX < landingPad.start - distanceFromPadForTrees
+        || treeX > landingPad.end + distanceFromPadForTrees) {
+      line(treeX, heightMap[treeX] - TREE_HEIGHT, treeX, heightMap[treeX]);
+    }
+    console.log('treeX :', treeX);
+    console.log('landingPad :', landingPad.position);
   }
 }
 
@@ -133,9 +138,8 @@ function main() {
 
   console.log(landingPad);
 
-  for (let i = 0; i < 10; i = i + 1) {
-    addTree();
-  }
+
+  addTrees(10);
 }
 
 
