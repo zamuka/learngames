@@ -139,7 +139,7 @@ function main() {
   console.log(landingPad);
 
 
-  addTrees(10);
+  addTrees(11);
 }
 
 
