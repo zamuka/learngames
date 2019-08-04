@@ -6,8 +6,8 @@ const heightMap = [];
 const ZOOM = 2;
 const padMinBorderDistance = 50;
 const TREE_HEIGHT = 25;
-let starCount = 0;
-let snowCount = 0;
+const snowCount = 0;
+let timestamp = 0;
 
 const landingPad = {
   width: 40,
@@ -15,6 +15,12 @@ const landingPad = {
   start: -1,
   end: -1,
 };
+
+const level = {
+  heightMap: [],
+  stars: [],
+};
+
 const distanceFromPadForTrees = 10;
 function getScreenWidth() {
   return canvas.width / ZOOM;
@@ -33,7 +39,7 @@ function clearScreen(color) {
   ctx.restore();
 }
 
-function drawLandscape(height) {
+function createLandscape(height) {
   let x = 0;
   let y = height;
   let vy = 0;
@@ -47,7 +53,6 @@ function drawLandscape(height) {
   landingPad.end = landingPad.position + landingPad.width / 2;
 
   while (x < getScreenWidth()) {
-    setPixel(x, y);
     heightMap.push(Math.floor(y));
     x = x + 1;
     const isOnPad = x > landingPad.start && x < landingPad.end;
@@ -59,6 +64,26 @@ function drawLandscape(height) {
 
       y = y + vy;
     }
+  }
+
+  console.log(heightMap.length);
+}
+
+
+function drawLandscape() {
+  const snowSpawnHeight = 160;
+  let x = 0;
+  while (x < heightMap.length) {
+    const y = heightMap[x];
+    setPixel(x, y);
+    setPixel(x, y + 1);
+    if (y < snowSpawnHeight) {
+      ctx.save();
+      ctx.fillStyle = 'rgb(255, 255, 255)';
+      setPixel(x, y - 1);
+      ctx.restore();
+    }
+    x = x + 1;
   }
 }
 
@@ -85,63 +110,57 @@ function getRandomInt(max) {
 }
 
 function addStar() {
-  let starX;
-  let starY;
+  const star = {
+    x: 0,
+    y: 0,
+  };
 
   do {
-    starX = getRandomInt(getScreenWidth());
-    starY = getRandomInt(getScreenHeight());
-  } while (starY > heightMap[starX]);
+    star.x = getRandomInt(getScreenWidth());
+    star.y = getRandomInt(getScreenHeight());
+  } while (star.y > heightMap[star.x]);
 
-  setPixel(starX, starY);
-  starCount = starCount + 1;
+  level.stars.push(star);
+}
+
+function createStars(starCount) {
+  for (let i = 0; i < starCount; i = i + 1) {
+    addStar();
+  }
 }
 
 const drawStars = () => {
   ctx.save();
   ctx.fillStyle = 'rgb(255, 255, 255)';
-  for (let i = 0; i < 100; i = i + 1) {
-    addStar();
-  }
+  level.stars.forEach((star) => {
+    setPixel(star.x, star.y);
+  });
   ctx.restore();
 };
+
+function drawFrame(t) {
+  const dt = t - timestamp;
+  timestamp = t;
+
+  clearScreen('rgb( 54, 49, 137)');
+  // heightMap = [];
+  // createLandscape(200);
+  drawLandscape();
+  drawStars();
+  addTrees(10);
+  requestAnimationFrame(drawFrame);
+}
 
 function main() {
   init(ZOOM);
   ctx.fillStyle = 'rgb(150, 150, 150)';
 
-  clearScreen('rgb( 54, 49, 137)');
 
-  drawLandscape(200);
+  createLandscape(200);
+  createStars(100);
 
-  const drawPixelBelowGround = (x) => {
-    setPixel(x, heightMap[x] + 1);
-  };
-
-  let j = 0;
-  while (j < heightMap.length) {
-    drawPixelBelowGround(j);
-    j = j + 1;
-  }
-  ctx.fillStyle = 'rgb(255, 255, 255)';
-  const snowSpawnHeight = 160;
-  for (let k = 0; k < heightMap.length; k = k + 1) {
-    const y = heightMap[k] - 1;
-    if (y < snowSpawnHeight) {
-      setPixel(k, y);
-      snowCount = snowCount + 1;
-    }
-  }
-
-  drawStars();
-  console.log('starCount :', starCount);
-  console.log('snowCount :', snowCount);
-
-  console.log(landingPad);
-
-
-  addTrees(10);
+  // addTrees(10);
+  requestAnimationFrame(drawFrame);
 }
-
 
 window.onload = main;
