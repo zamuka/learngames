@@ -19,6 +19,13 @@ const landingPad = {
 const level = {
   heightMap: [],
   stars: [],
+  lander: {
+    x: 30,
+    y: 30,
+    // px / sec
+    vy: 0,
+    vx: 20,
+  },
 };
 
 const distanceFromPadForTrees = 10;
@@ -138,16 +145,45 @@ const drawStars = () => {
   ctx.restore();
 };
 
+function drawLander() {
+  ctx.fillRect(
+    Math.floor(level.lander.x - 5), Math.floor(level.lander.y - 5), 11, 11,
+  );
+}
+
+// pixel / s * s
+const g = 10;
+/**
+ *
+ * @param {number} dt frame delta in ms
+ */
+function operateLander(dt) {
+  const frameTime = dt / 1000;
+
+  level.lander.vy = level.lander.vy + g * frameTime;
+
+  // if (level.lander.y > heightMap[Math.round(level.lander.x)]) {
+  //   level.lander.vy = -Math.abs(level.lander.vy);
+  // }
+
+  level.lander.x = level.lander.x + level.lander.vx * frameTime;
+  level.lander.y = level.lander.y + level.lander.vy * frameTime;
+
+}
+
 function drawFrame(t) {
   const dt = t - timestamp;
   timestamp = t;
 
   clearScreen('rgb( 54, 49, 137)');
-  // heightMap = [];
-  // createLandscape(200);
   drawLandscape();
   drawStars();
-  addTrees(10);
+
+  operateLander(dt);
+  drawLander();
+
+
+  // addTrees(10);
   requestAnimationFrame(drawFrame);
 }
 
