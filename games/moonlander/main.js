@@ -63,12 +63,11 @@ function drawLandscape(height) {
 }
 
 function addTrees(treeCount) {
-  for (let i = 0; i < treeCount;) {
+  for (let i = 0; i < treeCount; i = i + 1) {
     const treeX = getRandomInt(getScreenWidth());
     if (treeX < landingPad.start - distanceFromPadForTrees
         || treeX > landingPad.end + distanceFromPadForTrees) {
       line(treeX, heightMap[treeX] - TREE_HEIGHT, treeX, heightMap[treeX]);
-      i = i + 1;
     }
     console.log('treeX :', treeX);
     console.log('landingPad :', landingPad.position);
@@ -139,8 +138,7 @@ function main() {
 
   console.log(landingPad);
 
-
-  addTrees(15);
+  addTrees(10);
 }
 
 
