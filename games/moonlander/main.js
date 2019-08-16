@@ -144,13 +144,11 @@ function adjustEngineSound(frameTime) {
   const targetVolume = MIN_ENGINE_SOUND_VOLUME + (
     MAX_ENGINE_SOUND_VOLUME - MIN_ENGINE_SOUND_VOLUME) * engineLoad;
 
-  console.log('targetVolume', targetVolume);
   if (targetVolume >= sound.volume) {
     sound.volume = Math.min(targetVolume, sound.volume + engineVolumeDelta);
   } else {
     sound.volume = Math.max(MIN_ENGINE_SOUND_VOLUME, sound.volume - engineVolumeDelta);
   }
-  console.log(sound.volume);
 }
 
 function controlLander(frameTime) {
