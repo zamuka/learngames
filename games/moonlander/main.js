@@ -3,10 +3,14 @@ import {
 } from '../sandbox/canvasLibrary.js';
 
 const ZOOM = 2;
+const SOUND_CHANGE_RATE = 1;
+const MIN_ENGINE_SOUND_VOLUME = 0.02;
+const MAX_ENGINE_SOUND_VOLUME = 0.5;
 const padMinBorderDistance = 50;
 // const TREE_HEIGHT = 25;
 let frameTimeStamp = 0;
 
+const buttons = {};
 
 const level = {
   g: 5,
@@ -27,9 +31,13 @@ const level = {
      */
     vx: 20,
     vy: 0,
+    angle: 0,
+    rotation: 0,
+    rotationAcc: Math.PI * 2,
     image: new Image(),
     width: 32,
     height: 32,
+    thrustAcc: 40,
   },
 };
 
@@ -126,22 +134,73 @@ function createStars(starCount) {
     addStar();
   }
 }
+function adjustEngineSound(frameTime) {
+  const sound = level.lander.sound;
+  const engineVolumeDelta = SOUND_CHANGE_RATE * frameTime;
+  const isMainEngineOn = +!!buttons.ArrowUp;
+  const isRotationEngineOn = +!!(buttons.ArrowLeft || buttons.ArrowRight);
+
+  const engineLoad = 0.9 * isMainEngineOn + 0.1 * isRotationEngineOn;
+  const targetVolume = MIN_ENGINE_SOUND_VOLUME + (
+    MAX_ENGINE_SOUND_VOLUME - MIN_ENGINE_SOUND_VOLUME) * engineLoad;
+
+  console.log('targetVolume', targetVolume);
+  if (targetVolume >= sound.volume) {
+    sound.volume = Math.min(targetVolume, sound.volume + engineVolumeDelta);
+  } else {
+    sound.volume = Math.max(MIN_ENGINE_SOUND_VOLUME, sound.volume - engineVolumeDelta);
+  }
+  console.log(sound.volume);
+}
+
+function controlLander(frameTime) {
+  const lander = level.lander;
+  if (buttons.ArrowUp) {
+    lander.vy -= lander.thrustAcc * Math.cos(lander.angle) * frameTime;
+    lander.vx += lander.thrustAcc * Math.sin(lander.angle) * frameTime;
+  }
+  if (buttons.ArrowLeft) {
+    lander.rotation -= lander.rotationAcc * frameTime;
+  }
+  if (buttons.ArrowRight) {
+    lander.rotation += lander.rotationAcc * frameTime;
+  }
+
+  adjustEngineSound(frameTime);
+}
 
 function moveLander(frameTime) {
   const lander = level.lander;
+
+  controlLander(frameTime);
+
+
   lander.vy = lander.vy + level.g * frameTime;
-  lander.x = lander.x + lander.vx * frameTime;
-  lander.y = lander.y + lander.vy * frameTime;
+
+  lander.x += lander.vx * frameTime;
+  lander.y += lander.vy * frameTime;
+  lander.angle += lander.rotation * frameTime;
 }
 
 function drawLander() {
   const lander = level.lander;
-  const x = lander.x - Math.round(lander.width / 2);
-  const y = lander.y - Math.round(lander.height / 2);
-  ctx.drawImage(lander.image, x, y, 16, 16);
+  const spriteX = lander.x - Math.round(lander.width / 2);
+  const spriteY = lander.y - -Math.round(lander.height / 2);
+
+  ctx.translate(spriteX, spriteY);
+  ctx.rotate(lander.angle);
+
+  const zoomedWidth = lander.width / ZOOM;
+  const zoomedHeight = lander.height / ZOOM;
+  ctx.drawImage(lander.image,
+    -(zoomedWidth / 2), -(zoomedHeight / 2),
+    zoomedWidth, zoomedHeight);
+
+  ctx.rotate(-lander.angle);
+  ctx.translate(-spriteX, -spriteY);
 }
 
-function drawFrame(dt) {
+function drawFrame() {
   ctx.fillStyle = 'rgb(150, 150, 150)';
 
   clearScreen('rgb( 54, 49, 137)');
@@ -164,15 +223,34 @@ function nextFrame(timestamp) {
   requestAnimationFrame(nextFrame);
 }
 
+function initLanderResources() {
+  level.lander.image.src = 'resources/spaceship-32x32.png';
+
+  level.lander.sound = new Audio('resources/rocket.mp3');
+  level.lander.sound.loop = true;
+  level.lander.sound.play();
+  level.lander.sound.volume = MIN_ENGINE_SOUND_VOLUME;
+}
+
 function main() {
   init(ZOOM);
 
   createLandscape(200);
   createStars(100);
-  level.lander.image.src = 'spaceship-32x32.png';
+
+  initLanderResources();
 
   requestAnimationFrame(nextFrame);
 }
 
 
+function keyDown(event) {
+  buttons[event.code] = true;
+}
+function keyUp(event) {
+  buttons[event.code] = false;
+}
+
 window.onload = main;
+window.addEventListener('keydown', keyDown);
+window.addEventListener('keyup', keyUp);
