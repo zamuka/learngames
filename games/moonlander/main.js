@@ -7,7 +7,7 @@ const SOUND_CHANGE_RATE = 1;
 const MIN_ENGINE_SOUND_VOLUME = 0.02;
 const MAX_ENGINE_SOUND_VOLUME = 0.5;
 const padMinBorderDistance = 50;
-// const TREE_HEIGHT = 25;
+const TREE_HEIGHT = 25;
 let frameTimeStamp = 0;
 
 const buttons = {};
@@ -16,6 +16,7 @@ const level = {
   g: 5,
   snowSpawnHeight: 160,
   stars: [],
+  trees: [],
   heightMap: [],
   pad: {
     width: 40,
@@ -118,6 +119,20 @@ function addStar() {
   level.stars.push(star);
 }
 
+function treePositionIsOk(tree) {
+  return (tree.x > level.pad.end) || (tree.x < level.pad.start);
+}
+
+function addTree() {
+  const tree = { x: 0, y: 0 };
+  do {
+    tree.x = getRandomInt(getScreenWidth());
+  } while (!treePositionIsOk(tree));
+
+  tree.y = level.heightMap[tree.x];
+  level.trees.push(tree);
+}
+
 function drawStars() {
   ctx.save();
   ctx.fillStyle = 'rgb(255, 255, 255)';
@@ -129,11 +144,29 @@ function drawStars() {
   ctx.restore();
 }
 
+function drawTrees() {
+  ctx.save();
+  ctx.fillStyle = 'rgb(125, 125, 125)';
+
+  for (let i = 0; i < level.trees.length; i = i + 1) {
+    const tree = level.trees[i];
+    line(tree.x, tree.y, tree.x, tree.y - TREE_HEIGHT);
+  }
+  ctx.restore();
+}
+
 function createStars(starCount) {
   while (level.stars.length < starCount) {
     addStar();
   }
 }
+
+function createTrees(treeCount) {
+  while (level.trees.length < treeCount) {
+    addTree();
+  }
+}
+
 function adjustEngineSound(frameTime) {
   const sound = level.lander.sound;
   const engineVolumeDelta = SOUND_CHANGE_RATE * frameTime;
@@ -206,6 +239,7 @@ function drawFrame() {
 
   drawLandscape();
   drawStars();
+  drawTrees();
 
   drawLander();
 }
@@ -226,7 +260,7 @@ function initLanderResources() {
 
   level.lander.sound = new Audio('resources/rocket.mp3');
   level.lander.sound.loop = true;
-  level.lander.sound.play();
+  level.lander.sound.autoplay = true;
   level.lander.sound.volume = MIN_ENGINE_SOUND_VOLUME;
 }
 
@@ -235,6 +269,7 @@ function main() {
 
   createLandscape(200);
   createStars(100);
+  createTrees(10);
 
   initLanderResources();
 
