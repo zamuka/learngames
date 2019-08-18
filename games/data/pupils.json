@@ -1,0 +1,326 @@
+[
+  {
+    "_id": "5d5970cb20c11aa57732c5ac",
+    "name": "Robert Rodriquez",
+    "gender": "male",
+    "birthday": "2005-05-04",
+    "marks": {
+      "math": 5,
+      "literature": 11,
+      "physics": 9,
+      "chemistry": 10
+    }
+  },
+  {
+    "_id": "5d5970cb3e94d2f79c493a88",
+    "name": "Caroline Gates",
+    "gender": "female",
+    "birthday": "2005-03-03",
+    "marks": {
+      "math": 7,
+      "literature": 6,
+      "physics": 5,
+      "chemistry": 11
+    }
+  },
+  {
+    "_id": "5d5970cb3af82092f19aeb79",
+    "name": "Arline Hunter",
+    "gender": "female",
+    "birthday": "2005-10-06",
+    "marks": {
+      "math": 4,
+      "literature": 8,
+      "physics": 12,
+      "chemistry": 6
+    }
+  },
+  {
+    "_id": "5d5970cb41873b5510b4f4e3",
+    "name": "Shawna Avila",
+    "gender": "female",
+    "birthday": "2005-06-27",
+    "marks": {
+      "math": 3,
+      "literature": 4,
+      "physics": 12,
+      "chemistry": 5
+    }
+  },
+  {
+    "_id": "5d5970cbdd0bf7ff9898fd17",
+    "name": "Pansy Chapman",
+    "gender": "female",
+    "birthday": "2005-05-30",
+    "marks": {
+      "math": 6,
+      "literature": 6,
+      "physics": 12,
+      "chemistry": 3
+    }
+  },
+  {
+    "_id": "5d5970cba0f128b506d116cb",
+    "name": "Ester Graves",
+    "gender": "female",
+    "birthday": "2005-07-08",
+    "marks": {
+      "math": 9,
+      "literature": 5,
+      "physics": 8,
+      "chemistry": 8
+    }
+  },
+  {
+    "_id": "5d5970cba6d996748b7ab70e",
+    "name": "Patel Kelly",
+    "gender": "male",
+    "birthday": "2005-09-10",
+    "marks": {
+      "math": 3,
+      "literature": 8,
+      "physics": 12,
+      "chemistry": 12
+    }
+  },
+  {
+    "_id": "5d5970cbd11c414e02aa7298",
+    "name": "Barr Castillo",
+    "gender": "male",
+    "birthday": "2005-01-08",
+    "marks": {
+      "math": 8,
+      "literature": 4,
+      "physics": 8,
+      "chemistry": 9
+    }
+  },
+  {
+    "_id": "5d5970cb77d50180d318f82c",
+    "name": "Louisa Moreno",
+    "gender": "female",
+    "birthday": "2005-06-02",
+    "marks": {
+      "math": 5,
+      "literature": 7,
+      "physics": 10,
+      "chemistry": 7
+    }
+  },
+  {
+    "_id": "5d5970cbf38a1d4b889df6f0",
+    "name": "Katie Medina",
+    "gender": "female",
+    "birthday": "2005-08-29",
+    "marks": {
+      "math": 9,
+      "literature": 9,
+      "physics": 11,
+      "chemistry": 6
+    }
+  },
+  {
+    "_id": "5d5970cb16b84473da948d84",
+    "name": "Annie Hurst",
+    "gender": "female",
+    "birthday": "2005-01-14",
+    "marks": {
+      "math": 4,
+      "literature": 6,
+      "physics": 6,
+      "chemistry": 6
+    }
+  },
+  {
+    "_id": "5d5970cb121927f6796c1121",
+    "name": "Hodges Collier",
+    "gender": "male",
+    "birthday": "2005-01-04",
+    "marks": {
+      "math": 3,
+      "literature": 5,
+      "physics": 12,
+      "chemistry": 7
+    }
+  },
+  {
+    "_id": "5d5970cb74bc7589476d24ec",
+    "name": "Blackburn Salazar",
+    "gender": "male",
+    "birthday": "2005-11-03",
+    "marks": {
+      "math": 5,
+      "literature": 5,
+      "physics": 5,
+      "chemistry": 5
+    }
+  },
+  {
+    "_id": "5d5970cb830a29434697ef4d",
+    "name": "Elsie Moon",
+    "gender": "female",
+    "birthday": "2005-01-14",
+    "marks": {
+      "math": 12,
+      "literature": 5,
+      "physics": 4,
+      "chemistry": 7
+    }
+  },
+  {
+    "_id": "5d5970cb5cab1f2fb952f03e",
+    "name": "Meyers Peterson",
+    "gender": "male",
+    "birthday": "2005-10-30",
+    "marks": {
+      "math": 10,
+      "literature": 3,
+      "physics": 6,
+      "chemistry": 12
+    }
+  },
+  {
+    "_id": "5d5970cb6eb719509083ec6f",
+    "name": "Wall Cantrell",
+    "gender": "male",
+    "birthday": "2005-05-18",
+    "marks": {
+      "math": 8,
+      "literature": 9,
+      "physics": 3,
+      "chemistry": 5
+    }
+  },
+  {
+    "_id": "5d5970cb4742c5faae48fc4a",
+    "name": "Fern Stevens",
+    "gender": "female",
+    "birthday": "2005-04-25",
+    "marks": {
+      "math": 8,
+      "literature": 5,
+      "physics": 9,
+      "chemistry": 3
+    }
+  },
+  {
+    "_id": "5d5970cb31bf9a223fce0f9f",
+    "name": "Osborn Terry",
+    "gender": "male",
+    "birthday": "2005-05-04",
+    "marks": {
+      "math": 9,
+      "literature": 11,
+      "physics": 10,
+      "chemistry": 7
+    }
+  },
+  {
+    "_id": "5d5970cb0f5c71747a88edbf",
+    "name": "Barbara David",
+    "gender": "female",
+    "birthday": "2005-11-16",
+    "marks": {
+      "math": 7,
+      "literature": 9,
+      "physics": 4,
+      "chemistry": 6
+    }
+  },
+  {
+    "_id": "5d5970cbd772600156d52ff0",
+    "name": "Rivers Oneal",
+    "gender": "male",
+    "birthday": "2005-01-01",
+    "marks": {
+      "math": 10,
+      "literature": 7,
+      "physics": 3,
+      "chemistry": 12
+    }
+  },
+  {
+    "_id": "5d5970cb15ea6dbf1774034e",
+    "name": "Shanna Shaffer",
+    "gender": "female",
+    "birthday": "2005-08-20",
+    "marks": {
+      "math": 3,
+      "literature": 10,
+      "physics": 9,
+      "chemistry": 3
+    }
+  },
+  {
+    "_id": "5d5970cbbcdb7af8bdfd53e2",
+    "name": "Marcie Flynn",
+    "gender": "female",
+    "birthday": "2005-01-21",
+    "marks": {
+      "math": 11,
+      "literature": 10,
+      "physics": 3,
+      "chemistry": 3
+    }
+  },
+  {
+    "_id": "5d5970cbf01805980761995f",
+    "name": "Paulette Walton",
+    "gender": "female",
+    "birthday": "2005-04-04",
+    "marks": {
+      "math": 8,
+      "literature": 7,
+      "physics": 5,
+      "chemistry": 11
+    }
+  },
+  {
+    "_id": "5d5970cb77189d4af53562a6",
+    "name": "Bowers Thompson",
+    "gender": "male",
+    "birthday": "2005-12-27",
+    "marks": {
+      "math": 11,
+      "literature": 5,
+      "physics": 7,
+      "chemistry": 10
+    }
+  },
+  {
+    "_id": "5d5970cbe0309bfa3b10ecda",
+    "name": "Brittany Bond",
+    "gender": "female",
+    "birthday": "2005-02-05",
+    "marks": {
+      "math": 3,
+      "literature": 5,
+      "physics": 4,
+      "chemistry": 9
+    }
+  },
+  {
+    "_id": "5d5970cb3d4db40eb55dd6b5",
+    "name": "Leonard Ellison",
+    "gender": "male",
+    "birthday": "2005-01-23",
+    "marks": {
+      "math": 3,
+      "literature": 7,
+      "physics": 5,
+      "chemistry": 9
+    }
+  },
+  {
+    "_id": "5d5970cbc8105c0895a01eab",
+    "name": "Jenna Hodge",
+    "gender": "female",
+    "birthday": "2005-04-06",
+    "marks": {
+      "math": 5,
+      "literature": 7,
+      "physics": 11,
+      "chemistry": 8
+    }
+  }
+]

@@ -13,6 +13,7 @@
         "linebreak-style": "off",
         "operator-assignment": "off",
         "no-use-before-define": "off",
+        "prefer-template": "off",
         "prefer-destructuring": "off"
     }
 }
