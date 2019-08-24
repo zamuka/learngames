@@ -25,12 +25,12 @@ const level = {
     end: -1,
   },
   lander: {
-    x: 40,
-    y: 40,
+    x: 0,
+    y: 0,
     /**
      * axis x speed in pixels per second
      */
-    vx: 20,
+    vx: 0,
     vy: 0,
     angle: 0,
     rotation: 0,
@@ -215,15 +215,16 @@ function moveLander(frameTime) {
 
 function drawLander() {
   const lander = level.lander;
-  const spriteX = lander.x - Math.round(lander.width / 2);
-  const spriteY = lander.y - -Math.round(lander.height / 2);
+  const spriteX = lander.x;
+  const spriteY = lander.y;
 
   ctx.translate(spriteX, spriteY);
   ctx.rotate(lander.angle);
 
   const zoomedWidth = lander.width / ZOOM;
   const zoomedHeight = lander.height / ZOOM;
-  ctx.drawImage(lander.image,
+  console.log(zoomedWidth, zoomedHeight);
+  ctx.drawImage(lander.image, 0, 0, 32, 32,
     -(zoomedWidth / 2), -(zoomedHeight / 2),
     zoomedWidth, zoomedHeight);
 
@@ -244,6 +245,28 @@ function drawFrame() {
   drawLander();
 }
 
+function checkCollision() {
+  ctx.save();
+  ctx.fillStyle = 'rgb(255, 150, 150)';
+  const start = Math.round(level.lander.x - level.lander.width / 4);
+  const finish = start + level.lander.width / 2;
+  const shipBottom = level.lander.y + level.lander.height / 4;
+  let hit = false;
+  for (let x = start; x < finish; x = x + 1) {
+    setPixel(x, shipBottom);
+
+    setPixel(x, level.heightMap[x] - 1);
+    if (shipBottom > level.heightMap[x]) {
+      hit = true;
+    }
+  }
+
+  if (hit) {
+    level.lander.vy = -Math.abs(level.lander.vy);
+  }
+  ctx.restore();
+}
+
 function nextFrame(timestamp) {
   // time passed from previous frame in seconds
   const dt = (timestamp - frameTimeStamp) / 1000;
@@ -252,6 +275,7 @@ function nextFrame(timestamp) {
   moveLander(dt);
 
   drawFrame(dt);
+  checkCollision();
   requestAnimationFrame(nextFrame);
 }
 
