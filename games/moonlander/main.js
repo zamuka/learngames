@@ -8,6 +8,8 @@ const MIN_ENGINE_SOUND_VOLUME = 0.02;
 const MAX_ENGINE_SOUND_VOLUME = 0.5;
 const padMinBorderDistance = 50;
 const TREE_HEIGHT = 25;
+const SPARKLE_SPEED = 200;
+const SPARKLE_MAX_AGE = 0.1;
 let frameTimeStamp = 0;
 
 const buttons = {};
@@ -110,16 +112,32 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 function addSparkle() {
-  const sparkle = { x: level.lander.x, y: level.lander.y };
+  const angle = level.lander.angle + Math.PI;
+  const sparkle = {
+    angle,
+    x: level.lander.x,
+    y: level.lander.y,
+    fillStyle: `rgb(${getRandomInt(256)}, ${getRandomInt(256)}, ${getRandomInt(256)})`,
+    age: 0,
+    vx: SPARKLE_SPEED * Math.sin(angle),
+    vy: -SPARKLE_SPEED * Math.cos(angle),
+  };
   level.sparkles.push(sparkle);
 }
 
-function doSparkles() {
+function doSparkles(frameTime) {
   if (buttons.ArrowUp) {
     addSparkle();
   }
 
-  if (level.sparkles.length > 300) {
+  for (let i = 0; i < level.sparkles.length; i = i + 1) {
+    const sparkle = level.sparkles[i];
+    sparkle.age += frameTime;
+    sparkle.x = sparkle.x + sparkle.vx * frameTime;
+    sparkle.y = sparkle.y + sparkle.vy * frameTime;
+  }
+
+  while (level.sparkles.length > 0 && level.sparkles[0].age > SPARKLE_MAX_AGE) {
     level.sparkles.shift();
   }
 }
@@ -150,10 +168,10 @@ function addTree() {
 
 function drawSparkles() {
   ctx.save();
-  ctx.fillStyle = 'rgb(255, 255, 255)';
 
   for (let i = 0; i < level.sparkles.length; i = i + 1) {
     const sparkle = level.sparkles[i];
+    ctx.fillStyle = sparkle.fillStyle;
     setPixel(sparkle.x, sparkle.y);
   }
   ctx.restore();
@@ -249,13 +267,16 @@ function drawLander() {
 
   const zoomedWidth = lander.width / ZOOM;
   const zoomedHeight = lander.height / ZOOM;
-  console.log(zoomedWidth, zoomedHeight);
   ctx.drawImage(lander.image, 0, 0, 32, 32,
     -(zoomedWidth / 2), -(zoomedHeight / 2),
     zoomedWidth, zoomedHeight);
 
   ctx.rotate(-lander.angle);
   ctx.translate(-spriteX, -spriteY);
+}
+
+function drawText() {
+  ctx.fillText(`Angle: ${level.lander.angle.toFixed(3)}`, 20, 20);
 }
 
 function drawFrame() {
@@ -269,6 +290,7 @@ function drawFrame() {
   drawTrees();
   drawSparkles();
   drawLander();
+  drawText();
 }
 
 function checkCollision() {
