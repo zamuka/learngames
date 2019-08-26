@@ -119,8 +119,8 @@ function addSparkle() {
     y: level.lander.y,
     fillStyle: `rgb(${getRandomInt(256)}, ${getRandomInt(256)}, ${getRandomInt(256)})`,
     age: 0,
-    vx: SPARKLE_SPEED * Math.sin(angle),
-    vy: -SPARKLE_SPEED * Math.cos(angle),
+    vx: SPARKLE_SPEED * Math.sin(angle) + level.lander.vx,
+    vy: -SPARKLE_SPEED * Math.cos(angle) + level.lander.vy,
   };
   level.sparkles.push(sparkle);
 }
@@ -328,7 +328,7 @@ function nextFrame(timestamp) {
 }
 
 function initLanderResources() {
-  level.lander.image.src = 'resources/spaceship-32x32.png';
+  level.lander.image.src = 'resources/spaceshipblack-32x32.png';
 
   level.lander.sound = new Audio('resources/rocket.mp3');
   level.lander.sound.loop = true;
