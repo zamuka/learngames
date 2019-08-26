@@ -15,6 +15,7 @@ const buttons = {};
 const level = {
   g: 5,
   snowSpawnHeight: 160,
+  sparkles: [],
   stars: [],
   trees: [],
   heightMap: [],
@@ -25,12 +26,12 @@ const level = {
     end: -1,
   },
   lander: {
-    x: 0,
-    y: 0,
+    x: 30,
+    y: 30,
     /**
      * axis x speed in pixels per second
      */
-    vx: 0,
+    vx: 20,
     vy: 0,
     angle: 0,
     rotation: 0,
@@ -108,6 +109,20 @@ function drawLandscape() {
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
+function addSparkle() {
+  const sparkle = { x: level.lander.x, y: level.lander.y };
+  level.sparkles.push(sparkle);
+}
+
+function doSparkles() {
+  if (buttons.ArrowUp) {
+    addSparkle();
+  }
+
+  if (level.sparkles.length > 300) {
+    level.sparkles.shift();
+  }
+}
 
 function addStar() {
   const star = { x: 0, y: 0 };
@@ -131,6 +146,17 @@ function addTree() {
 
   tree.y = level.heightMap[tree.x];
   level.trees.push(tree);
+}
+
+function drawSparkles() {
+  ctx.save();
+  ctx.fillStyle = 'rgb(255, 255, 255)';
+
+  for (let i = 0; i < level.sparkles.length; i = i + 1) {
+    const sparkle = level.sparkles[i];
+    setPixel(sparkle.x, sparkle.y);
+  }
+  ctx.restore();
 }
 
 function drawStars() {
@@ -241,7 +267,7 @@ function drawFrame() {
   drawLandscape();
   drawStars();
   drawTrees();
-
+  drawSparkles();
   drawLander();
 }
 
@@ -273,7 +299,7 @@ function nextFrame(timestamp) {
   frameTimeStamp = timestamp;
 
   moveLander(dt);
-
+  doSparkles(dt);
   drawFrame(dt);
   checkCollision();
   requestAnimationFrame(nextFrame);
