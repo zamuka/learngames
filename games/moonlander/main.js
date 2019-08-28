@@ -112,12 +112,13 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 function addSparkle() {
-  const angle = level.lander.angle + Math.PI;
+  const sparkleDeviation = Math.random() * 0.4 - 0.2;
+  const angle = level.lander.angle + Math.PI + sparkleDeviation;
   const sparkle = {
     angle,
     x: level.lander.x,
     y: level.lander.y,
-    fillStyle: `rgb(${getRandomInt(256)}, ${getRandomInt(256)}, ${getRandomInt(256)})`,
+    fillStyle: `rgb(255, ${getRandomInt(256)}, 0)`,
     age: 0,
     vx: SPARKLE_SPEED * Math.sin(angle) + level.lander.vx,
     vy: -SPARKLE_SPEED * Math.cos(angle) + level.lander.vy,
@@ -301,8 +302,6 @@ function checkCollision() {
   const shipBottom = level.lander.y + level.lander.height / 4;
   let hit = false;
   for (let x = start; x < finish; x = x + 1) {
-    setPixel(x, shipBottom);
-
     setPixel(x, level.heightMap[x] - 1);
     if (shipBottom > level.heightMap[x]) {
       hit = true;
