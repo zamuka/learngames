@@ -283,7 +283,7 @@ function drawText() {
 function drawFrame() {
   ctx.fillStyle = 'rgb(150, 150, 150)';
 
-  clearScreen('rgb( 54, 49, 137)');
+  clearScreen('rgb( 30, 30, 100)');
 
 
   drawLandscape();
@@ -296,7 +296,7 @@ function drawFrame() {
 
 function checkCollision() {
   ctx.save();
-  ctx.fillStyle = 'rgb(255, 150, 150)';
+  ctx.fillStyle = 'rgb(0, 0, 0)';
   const start = Math.round(level.lander.x - level.lander.width / 4);
   const finish = start + level.lander.width / 2;
   const shipBottom = level.lander.y + level.lander.height / 4;
