@@ -10,11 +10,15 @@ const padMinBorderDistance = 50;
 const TREE_HEIGHT = 25;
 const SPARKLE_SPEED = 200;
 const SPARKLE_MAX_AGE = 0.1;
+const INITIAL_MUSIC_VOLUME = 0.5;
+
+
 let frameTimeStamp = 0;
 
 const buttons = {};
 
 const level = {
+  music: null,
   g: 5,
   snowSpawnHeight: 160,
   sparkles: [],
@@ -336,6 +340,13 @@ function initLanderResources() {
   level.lander.sound.volume = MIN_ENGINE_SOUND_VOLUME;
 }
 
+function initMusic() {
+  level.music = new Audio('resources/landermusic.mp3');
+  level.music.loop = true;
+  level.music.autoplay = true;
+  level.music.volume = INITIAL_MUSIC_VOLUME;
+}
+
 function main() {
   init(ZOOM);
 
@@ -344,6 +355,8 @@ function main() {
   createTrees(10);
 
   initLanderResources();
+  initMusic();
+
 
   requestAnimationFrame(nextFrame);
 }
