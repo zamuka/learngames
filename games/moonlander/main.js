@@ -17,6 +17,19 @@ let frameTimeStamp = 0;
 
 const buttons = {};
 
+const landerStart = {
+  x: 30,
+  y: 30,
+  /**
+   * axis x speed in pixels per second
+   */
+  vx: 20,
+  vy: 0,
+  angle: 0,
+  rotation: 0,
+  rotationAcc: Math.PI * 2,
+}
+
 const level = {
   music: null,
   g: 5,
@@ -32,16 +45,7 @@ const level = {
     end: -1,
   },
   lander: {
-    x: 30,
-    y: 30,
-    /**
-     * axis x speed in pixels per second
-     */
-    vx: 20,
-    vy: 0,
-    angle: 0,
-    rotation: 0,
-    rotationAcc: Math.PI * 2,
+    ...landerStart,
     image: new Image(),
     width: 32,
     height: 32,
@@ -67,6 +71,7 @@ function clearScreen(color) {
 }
 
 function createLandscape(height) {
+  level.heightMap = [];
   let x = 0;
   let y = height;
   let vy = 0;
@@ -216,6 +221,12 @@ function createTrees(treeCount) {
   }
 }
 
+function getAngleDelta() {
+  let angleDelta = Math.abs(level.lander.angle / (2 * Math.PI) % 1);
+  if (angleDelta > 0.5) angleDelta = 1 - angleDelta;
+  return angleDelta;
+}
+
 function adjustEngineSound(frameTime) {
   const sound = level.lander.sound;
   const engineVolumeDelta = SOUND_CHANGE_RATE * frameTime;
@@ -259,7 +270,7 @@ function moveLander(frameTime) {
 
   lander.x += lander.vx * frameTime;
   lander.y += lander.vy * frameTime;
-  lander.angle += lander.rotation * frameTime;
+  lander.angle = lander.angle + lander.rotation * frameTime;
 }
 
 function drawLander() {
@@ -282,6 +293,10 @@ function drawLander() {
 
 function drawText() {
   ctx.fillText(`Angle: ${level.lander.angle.toFixed(3)}`, 20, 20);
+  ctx.fillText(`Over Pad: ${isLanderOnPad()}`, 20, 40);
+  ctx.fillText(`vx: ${Math.round(level.lander.vx)}`, 20, 60);
+  ctx.fillText(`vy: ${Math.round(level.lander.vy)}`, 20, 80);
+  ctx.fillText(`angleDelta: ${getAngleDelta().toFixed(2)}`, 20, 100);
 }
 
 function drawFrame() {
@@ -298,15 +313,13 @@ function drawFrame() {
   drawText();
 }
 
-function checkCollision() {
-  ctx.save();
-  ctx.fillStyle = 'rgb(0, 0, 0)';
+function isLandscapeHit() {
   const start = Math.round(level.lander.x - level.lander.width / 4);
   const finish = start + level.lander.width / 2;
   const shipBottom = level.lander.y + level.lander.height / 4;
   let hit = false;
   for (let x = start; x < finish; x = x + 1) {
-    setPixel(x, level.heightMap[x] - 1);
+    // setPixel(x, level.heightMap[x] - 1);
     if (shipBottom > level.heightMap[x]) {
       hit = true;
     }
@@ -315,7 +328,34 @@ function checkCollision() {
   if (hit) {
     level.lander.vy = -Math.abs(level.lander.vy);
   }
-  ctx.restore();
+
+  return hit;
+}
+
+function isLanderOnPad() {
+  const isOnPad = (level.lander.x - 8 > level.pad.start) &&
+    (level.lander.x + 8 < level.pad.end);
+  return isOnPad;
+}
+function checkCollision() {
+  if (!isLandscapeHit()) {
+    return;
+  }
+
+  if (
+    Math.abs(level.lander.vy) < 10 &&
+    Math.abs(level.lander.vx) < 10 &&
+    isLanderOnPad() &&
+    isLanderLookOnTop()
+  ) {
+    alert('YOU WIN!');
+  } else {
+    alert('BOOM');
+  }
+  newGame();
+}
+function isLanderLookOnTop() {
+  return getAngleDelta() < 0.03;
 }
 
 function nextFrame(timestamp) {
@@ -326,7 +366,9 @@ function nextFrame(timestamp) {
   moveLander(dt);
   doSparkles(dt);
   drawFrame(dt);
+
   checkCollision();
+
   requestAnimationFrame(nextFrame);
 }
 
@@ -346,16 +388,23 @@ function initMusic() {
   level.music.volume = INITIAL_MUSIC_VOLUME;
 }
 
-function main() {
-  init(ZOOM);
-
+function newGame() {
   createLandscape(200);
   createStars(100);
   createTrees(10);
+  level.lander = {
+    ...level.lander,
+    ...landerStart
+  }
+}
+
+function main() {
+  init(ZOOM);
 
   initLanderResources();
   initMusic();
 
+  newGame();
 
   requestAnimationFrame(nextFrame);
 }
