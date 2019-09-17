@@ -11,6 +11,8 @@ const TREE_HEIGHT = 25;
 const SPARKLE_SPEED = 200;
 const SPARKLE_MAX_AGE = 0.1;
 const INITIAL_MUSIC_VOLUME = 0.5;
+const INITIAL_FUEL_AMOUNT = 2000;
+const FUEL_CONSUMPTION_RATE = 100;
 
 
 let frameTimeStamp = 0;
@@ -24,10 +26,11 @@ const landerStart = {
    * axis x speed in pixels per second
    */
   vx: 20,
-  vy: 0,
+  vy: 30,
   angle: 0,
   rotation: 0,
   rotationAcc: Math.PI * 2,
+  fuel: INITIAL_FUEL_AMOUNT,
 }
 
 const level = {
@@ -210,14 +213,17 @@ function drawTrees() {
 }
 
 function createStars(starCount) {
+  level.stars = [];
   while (level.stars.length < starCount) {
     addStar();
   }
 }
 
 function createTrees(treeCount) {
+  level.trees = [];
   while (level.trees.length < treeCount) {
     addTree();
+
   }
 }
 
@@ -297,6 +303,7 @@ function drawText() {
   ctx.fillText(`vx: ${Math.round(level.lander.vx)}`, 20, 60);
   ctx.fillText(`vy: ${Math.round(level.lander.vy)}`, 20, 80);
   ctx.fillText(`angleDelta: ${getAngleDelta().toFixed(2)}`, 20, 100);
+  ctx.fillText(`Fuel: ${level.lander.fuel.toFixed(0)}`, 20, 120);
 }
 
 function drawFrame() {
@@ -350,7 +357,7 @@ function checkCollision() {
   ) {
     alert('YOU WIN!');
   } else {
-    alert('BOOM');
+    // alert('BOOM');
   }
   newGame();
 }
@@ -363,7 +370,14 @@ function nextFrame(timestamp) {
   const dt = (timestamp - frameTimeStamp) / 1000;
   frameTimeStamp = timestamp;
 
+  const isMainEngineOn = +!!buttons.ArrowUp;
+  const isRotationEngineOn = +!!(buttons.ArrowLeft || buttons.ArrowRight);
+
+  const fuelSpent = FUEL_CONSUMPTION_RATE * dt * isMainEngineOn;
+  level.lander.fuel = level.lander.fuel - fuelSpent;
+
   moveLander(dt);
+
   doSparkles(dt);
   drawFrame(dt);
 
