@@ -11,7 +11,7 @@ const TREE_HEIGHT = 25;
 const SPARKLE_SPEED = 200;
 const SPARKLE_MAX_AGE = 0.1;
 const INITIAL_MUSIC_VOLUME = 0.5;
-const INITIAL_FUEL_AMOUNT = 2000;
+const INITIAL_FUEL_AMOUNT = 600;
 const FUEL_CONSUMPTION_RATE = 100;
 
 
@@ -139,7 +139,7 @@ function addSparkle() {
 }
 
 function doSparkles(frameTime) {
-  if (buttons.ArrowUp) {
+  if (buttons.ArrowUp && level.lander.fuel) {
     addSparkle();
   }
 
@@ -252,17 +252,21 @@ function adjustEngineSound(frameTime) {
 
 function controlLander(frameTime) {
   const lander = level.lander;
-  if (buttons.ArrowUp) {
-    lander.vy -= lander.thrustAcc * Math.cos(lander.angle) * frameTime;
-    lander.vx += lander.thrustAcc * Math.sin(lander.angle) * frameTime;
-  }
-  if (buttons.ArrowLeft) {
-    lander.rotation -= lander.rotationAcc * frameTime;
-  }
-  if (buttons.ArrowRight) {
-    lander.rotation += lander.rotationAcc * frameTime;
-  }
 
+  const isControllable = level.lander.fuel > 0;
+
+  if (isControllable) {
+    if (buttons.ArrowUp) {
+      lander.vy -= lander.thrustAcc * Math.cos(lander.angle) * frameTime;
+      lander.vx += lander.thrustAcc * Math.sin(lander.angle) * frameTime;
+    }
+    if (buttons.ArrowLeft) {
+      lander.rotation -= lander.rotationAcc * frameTime;
+    }
+    if (buttons.ArrowRight) {
+      lander.rotation += lander.rotationAcc * frameTime;
+    }
+  }
   adjustEngineSound(frameTime);
 }
 
@@ -297,13 +301,13 @@ function drawLander() {
   ctx.translate(-spriteX, -spriteY);
 }
 
-function drawText() {
-  ctx.fillText(`Angle: ${level.lander.angle.toFixed(3)}`, 20, 20);
-  ctx.fillText(`Over Pad: ${isLanderOnPad()}`, 20, 40);
-  ctx.fillText(`vx: ${Math.round(level.lander.vx)}`, 20, 60);
-  ctx.fillText(`vy: ${Math.round(level.lander.vy)}`, 20, 80);
-  ctx.fillText(`angleDelta: ${getAngleDelta().toFixed(2)}`, 20, 100);
-  ctx.fillText(`Fuel: ${level.lander.fuel.toFixed(0)}`, 20, 120);
+function drawStats() {
+  ctx.save();
+  ctx.fillStyle = 'rgb(160, 160, 0)';
+  ctx.fillRect(10, 10, level.lander.fuel / 6, 20);
+  ctx.restore();
+
+  // ctx.fillText(`vx: ${Math.round(level.lander.vx)}`, 20, 60);
 }
 
 function drawFrame() {
@@ -317,7 +321,7 @@ function drawFrame() {
   drawTrees();
   drawSparkles();
   drawLander();
-  drawText();
+  drawStats();
 }
 
 function isLandscapeHit() {
@@ -375,6 +379,10 @@ function nextFrame(timestamp) {
 
   const fuelSpent = FUEL_CONSUMPTION_RATE * dt * isMainEngineOn;
   level.lander.fuel = level.lander.fuel - fuelSpent;
+
+  if (level.lander.fuel < 0) {
+    level.lander.fuel = 0;
+  }
 
   moveLander(dt);
 
