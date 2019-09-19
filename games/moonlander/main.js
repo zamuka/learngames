@@ -302,9 +302,20 @@ function drawLander() {
 }
 
 function drawStats() {
+
+  const fuelPercent = level.lander.fuel / INITIAL_FUEL_AMOUNT * 100;
   ctx.save();
-  ctx.fillStyle = 'rgb(160, 160, 0)';
-  ctx.fillRect(10, 10, level.lander.fuel / 6, 20);
+
+
+  ctx.fillStyle = `rgb(${200 - fuelPercent * 2}, ${Math.min(100, fuelPercent * 3 - 50)}, 0)`;
+  ctx.fillRect(10, 10, fuelPercent, 10);
+
+  ctx.fillStyle = `rgb(127, 127, 127)`;
+  ctx.beginPath();
+  ctx.rect(10, 10, 100, 10);
+  ctx.stroke();
+
+
   ctx.restore();
 
   // ctx.fillText(`vx: ${Math.round(level.lander.vx)}`, 20, 60);
