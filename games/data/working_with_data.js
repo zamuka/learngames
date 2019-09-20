@@ -1,43 +1,36 @@
 const pupils = require('./pupils.json');
-
-
-// const first = pupils[0];
-console.log('There are ' + pupils.length + ' pupil(s) in a group');
-// console.log(pupils);
-// console.log(first.marks);
-// console.log(first.marks.physics);
-
+let smartestGender;
+let mediumMarkBoys = 0;
+let allMarksBoys = 0;
+let mediumMarkGirls = 0;
+let allMarksGirls = 0;
+let girlsCount = 0;
 let boysCount = 0;
+// let smartestInPhysics;
+let smartest;
 
 for (let i = 0; i < pupils.length; i = i + 1) {
+  if (pupils[i].gender === 'female') {
+    girlsCount = girlsCount + 1;
+    allMarksGirls = allMarksGirls + pupils[i].marks.physics;
+  }
   if (pupils[i].gender === 'male') {
     boysCount = boysCount + 1;
+    allMarksBoys = allMarksBoys + pupils[i].marks.physics;
   }
 }
 
-function getMarksValue(person) {
-  return person.marks.math
-  + person.marks.literature
-  + person.marks.physics
-  + person.marks.chemistry;
+mediumMarkBoys = allMarksBoys / boysCount;
+mediumMarkGirls = allMarksGirls / girlsCount;
+
+if (mediumMarkBoys < mediumMarkGirls) {
+  smartestGender = 'Girls are better';
+} else {
+  smartestGender = 'Boys are better';
 }
 
-// find the oldest pupil in the group
-let oldest = pupils[0];
-let smartest = pupils[0];
-for (let i = 0; i < pupils.length; i = i + 1) {
-  if (pupils[i].birthday < oldest.birthday) {
-    oldest = pupils[i];
-  }
-  console.log(getMarksValue(pupils[i]));
-
-  if (getMarksValue(pupils[i]) > getMarksValue(smartest)) {
-    smartest = pupils[i];
-  }
-}
-
-console.log('boysCount', boysCount);
-console.log('oldest', oldest.name);
-console.log(oldest);
-console.log('smartest', smartest.name);
-console.log(smartest);
+console.log(mediumMarkGirls);
+console.log(girlsCount);
+console.log(mediumMarkBoys);
+console.log(boysCount);
+console.log(smartestGender);

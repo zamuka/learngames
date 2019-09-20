@@ -25,9 +25,9 @@ const landerStart = {
   /**
    * axis x speed in pixels per second
    */
-  vx: 20,
-  vy: 30,
-  angle: 0,
+  vx: 0,
+  vy: 0,
+  angle: Math.random() * 2 - 1,
   rotation: 0,
   rotationAcc: Math.PI * 2,
   fuel: INITIAL_FUEL_AMOUNT,
@@ -40,6 +40,7 @@ const level = {
   sparkles: [],
   stars: [],
   trees: [],
+  gameState: 'play',
   heightMap: [],
   pad: {
     width: 40,
@@ -320,7 +321,10 @@ function drawFrame() {
   drawStars();
   drawTrees();
   drawSparkles();
-  drawLander();
+
+  if (level.gameState === 'play') {
+    drawLander();
+  }
   drawStats();
 }
 
@@ -359,11 +363,14 @@ function checkCollision() {
     isLanderOnPad() &&
     isLanderLookOnTop()
   ) {
+    // level.gameState = 'win';
     alert('YOU WIN!');
+    newGame();
   } else {
+    level.gameState = 'lose';
     // alert('BOOM');
+    newGame();
   }
-  newGame();
 }
 function isLanderLookOnTop() {
   return getAngleDelta() < 0.03;
@@ -418,6 +425,7 @@ function newGame() {
     ...level.lander,
     ...landerStart
   }
+  level.gameState = 'play';
 }
 
 function main() {
