@@ -46,7 +46,6 @@ function moveTail() {
   const cell = gameField.getCell(tailX, tailY);
   gameField.setCell(tailX, tailY, '');
 
-  console.log(cell, tailX, tailX);
   if (cell === 'snake up') {
     tailY = tailY - 1;
   }
@@ -70,28 +69,28 @@ function tick() {
   const hitCell = gameField.getCell(headX, headY);
 
   switch (hitCell) {
-    case 'food':
-      cycleLengthMs = cycleLengthMs * 0.9;
-      score = score + 1;
-      tailDelay = 1;
-      addFood();
-      break;
+  case 'food':
+    cycleLengthMs = cycleLengthMs * 0.9;
+    score = score + 1;
+    tailDelay = 1;
+    addFood();
+    break;
 
-    case 'Enemy':
-      cycleLengthMs = cycleLengthMs * 0.1;
-      score = score + 0;
-      tailDelay = 100;
-      addEnemy();
-      break;
+  case 'Enemy':
+    cycleLengthMs = cycleLengthMs * 0.1;
+    score = score + 0;
+    tailDelay = 100;
+    addEnemy();
+    break;
 
-    case '':
-      break;
+  case '':
+    break;
 
-    default:
-      paused = true;
-      alert(`Game Over! You score : ${score}`);
-      resetGame();
-      return;
+  default:
+    paused = true;
+    alert(`Game Over! You score : ${score}`);
+    resetGame();
+    return;
   }
 
   drawHead();

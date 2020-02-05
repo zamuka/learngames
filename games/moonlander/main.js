@@ -1,5 +1,9 @@
 import {
-  init, ctx, canvas, setPixel, line,
+  init,
+  ctx,
+  canvas,
+  setPixel,
+  line
 } from '../sandbox/canvasLibrary.js';
 
 const ZOOM = 2;
@@ -31,7 +35,7 @@ const landerStart = {
   rotation: 0,
   rotationAcc: Math.PI * 2,
   fuel: INITIAL_FUEL_AMOUNT,
-}
+};
 
 const level = {
   music: null,
@@ -81,8 +85,8 @@ function createLandscape(height) {
   let vy = 0;
   let ay = 0;
   const MAX_SLOPE = 2;
-  level.pad.position = Math.round(Math.random() * (getScreenWidth() - padMinBorderDistance * 2))
-    + padMinBorderDistance;
+  level.pad.position = Math.round(Math.random() * (getScreenWidth() - padMinBorderDistance * 2)) +
+    padMinBorderDistance;
 
   level.pad.start = level.pad.position - level.pad.width / 2;
   level.pad.end = level.pad.position + level.pad.width / 2;
@@ -124,6 +128,7 @@ function drawLandscape() {
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
+
 function addSparkle() {
   const sparkleDeviation = Math.random() * 0.4 - 0.2;
   const angle = level.lander.angle + Math.PI + sparkleDeviation;
@@ -157,7 +162,10 @@ function doSparkles(frameTime) {
 }
 
 function addStar() {
-  const star = { x: 0, y: 0 };
+  const star = {
+    x: 0,
+    y: 0
+  };
   do {
     star.x = getRandomInt(getScreenWidth());
     star.y = getRandomInt(getScreenHeight());
@@ -171,7 +179,10 @@ function treePositionIsOk(tree) {
 }
 
 function addTree() {
-  const tree = { x: 0, y: 0 };
+  const tree = {
+    x: 0,
+    y: 0
+  };
   do {
     tree.x = getRandomInt(getScreenWidth());
   } while (!treePositionIsOk(tree));
@@ -352,6 +363,7 @@ function isLanderOnPad() {
     (level.lander.x + 8 < level.pad.end);
   return isOnPad;
 }
+
 function checkCollision() {
   if (!isLandscapeHit()) {
     return;
@@ -372,6 +384,7 @@ function checkCollision() {
     newGame();
   }
 }
+
 function isLanderLookOnTop() {
   return getAngleDelta() < 0.03;
 }
@@ -424,7 +437,7 @@ function newGame() {
   level.lander = {
     ...level.lander,
     ...landerStart
-  }
+  };
   level.gameState = 'play';
 }
 
@@ -443,6 +456,7 @@ function main() {
 function keyDown(event) {
   buttons[event.code] = true;
 }
+
 function keyUp(event) {
   buttons[event.code] = false;
 }
